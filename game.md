@@ -20,33 +20,33 @@
 
 ### Exogenous
 
-| Symbol         | Definition                                    | Units                                 |
-| :------------- | :-------------------------------------------- | :------------------------------------ |
-| $\tilde e_t$   | Counterfactual floating nominal exchange rate | CNY per USD                           |
-| $fdi\_ratio_t$ | FDI inflows \/ GDP                            | fraction                              |
-| $Y^*_t$        | Foreign income                                | index (1980 = 1000)                   |
-| $H_t$          | Human capital index                           | index (2015 = Penn World Table value) |
-| $G_t$          | Government spending                            | bn USD      |
+| Symbol         | Definition                                    | Units                                 | Allowed Range        |
+| :------------- | :-------------------------------------------- | :------------------------------------ | :------------------- |
+| $\tilde e_t$   | Counterfactual floating nominal exchange rate | CNY per USD                           | 0.5 to 10.0          |
+| $fdi\_ratio_t$ | FDI inflows \/ GDP                            | fraction                              | 0.0 to 0.1           |
+| $Y^*_t$        | Foreign income                                | index (1980 = 1000)                   | 500.0 to 5000.0      |
+| $H_t$          | Human capital index                           | index (2015 = Penn World Table value) | 1.0 to 10.0          |
+| $G_t$          | Government spending                           | bn USD                                | -500.0 to 1500.0     |
 
 ### Parameters
 
-| Symbol                          | Definition                                   | Units    | Value       |
-| :------------------------------ | :------------------------------------------- | :------- | :---------- |
-| $\alpha$                        | Capital share in production                  | unitless | $0.30$      |
-| $\delta$                        | Depreciation rate                            | per year | $0.10$      |
-| $g$                             | Baseline TFP growth rate                     | per year | $0.005$     |
-| $n$                             | Labor‐force growth rate                      | per year | $0.00717$   |
-| $\theta$                        | Openness contribution to TFP growth          | unitless | $0.1453$    |
-| $\phi$                          | FDI contribution to TFP growth               | unitless | $0.10$      |
-| $K_0$                           | Initial level of physical capital (1980)     | bn USD   | $2050.10$   |
-| $X_0$                           | Initial level of exports (1980)              | bn USD   | $18.10$     |
-| $M_0$                           | Initial level of imports (1980)              | bn USD   | $14.50$     |
-| $L_0$                           | Initial labor force (1980)                   | millions | $428.30$    |
-| $A_0$                           | Initial level of TFP (1980)                  | index    | $0.203$     |
-| $\varepsilon_x,\ \varepsilon_m$ | Exchange‐rate elasticities (exports/imports) | unitless | $1.5,\ 1.2$ |
-| $\mu_x,\ \mu_m$                 | Income elasticities (exports/imports)        | unitless | $1.0,\ 1.0$ |
+| Symbol                          | Definition                                   | Units    | Value       | Allowed Range   |
+| :------------------------------ | :------------------------------------------- | :------- | :---------- | :-------------- |
+| $\alpha$                        | Capital share in production                  | unitless | $0.30$      | 0.1 to 0.9      |
+| $\delta$                        | Depreciation rate                            | per year | $0.10$      | 0.01 to 0.2     |
+| $g$                             | Baseline TFP growth rate                     | per year | $0.005$     | 0.001 to 0.05   |
+| $n$                             | Labor‐force growth rate                      | per year | $0.00717$   | Fixed           |
+| $\theta$                        | Openness contribution to TFP growth          | unitless | $0.1453$    | 0.01 to 0.5     |
+| $\phi$                          | FDI contribution to TFP growth               | unitless | $0.10$      | 0.01 to 0.5     |
+| $K_0$                           | Initial level of physical capital (1980)     | bn USD   | $2050.10$   | Fixed           |
+| $X_0$                           | Initial level of exports (1980)              | bn USD   | $18.10$     | Fixed           |
+| $M_0$                           | Initial level of imports (1980)              | bn USD   | $14.50$     | Fixed           |
+| $L_0$                           | Initial labor force (1980)                   | millions | $428.30$    | Fixed           |
+| $A_0$                           | Initial level of TFP (1980)                  | index    | $0.832$     | Fixed           |
+| $\varepsilon_x,\ \varepsilon_m$ | Exchange‐rate elasticities (exports/imports) | unitless | $1.5,\ 1.2$ | 0.5 to 3.0      |
+| $\mu_x,\ \mu_m$                 | Income elasticities (exports/imports)        | unitless | $1.0,\ 1.0$ | 0.5 to 2.0      |
 
-**Note:** The initial TFP, $A_0$, is backed out from 1980 data via
+**Note:** The initial TFP, $A_0$, is set to match the historical TFP value from 1980 data (0.832). Previously, it was backed out from 1980 data via:
 
 $$
 A_0 \;=\;\frac{Y_{1980}}{K_0^{\alpha}\,(L_0\,H_0)^{1-\alpha}}
