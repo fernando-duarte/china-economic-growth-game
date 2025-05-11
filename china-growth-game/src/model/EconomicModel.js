@@ -11,8 +11,8 @@ const DEFAULT_PARAMETERS = {
   theta: 0.1453,         // Openness contribution to TFP growth
   phi: 0.10,             // FDI contribution to TFP growth
   K0: 2050.10,           // Initial level of physical capital (1980)
-  X0: 18.10,             // Initial level of exports (1980)
-  M0: 14.50,             // Initial level of imports (1980)
+  X0: 19.41,             // Initial level of exports (1980) - updated to match historical data
+  M0: 21.84,             // Initial level of imports (1980) - updated to match historical data
   A0: 0.832,             // Initial level of TFP (1980) - using historical data value
   epsilon_x: 1.5,        // Exchange-rate elasticity (exports)
   epsilon_m: 1.2,        // Exchange-rate elasticity (imports)
@@ -25,17 +25,18 @@ const DEFAULT_PARAMETERS = {
 let PARAMETERS = { ...DEFAULT_PARAMETERS };
 
 // Default exogenous variables by year (5-year intervals)
+// Human capital values scaled by 0.1329 to match historical Y_0 in 1980
 const DEFAULT_EXOGENOUS_VARIABLES = {
-  1980: { fdi_ratio: 0.001, Y_star: 1000.00, H: 1.58, G: 3.78, L: 428.30 },
-  1985: { fdi_ratio: 0.001, Y_star: 1159.27, H: 1.77, G: -0.30, L: 496.80 },
-  1990: { fdi_ratio: 0.02, Y_star: 1343.92, H: 1.80, G: -2.76, L: 550.80 },
-  1995: { fdi_ratio: 0.02, Y_star: 1557.97, H: 2.02, G: 3.47, L: 629.00 },
-  2000: { fdi_ratio: 0.02, Y_star: 1806.11, H: 2.24, G: 5.82, L: 679.50 },
-  2005: { fdi_ratio: 0.02, Y_star: 2093.78, H: 2.43, G: -4.17, L: 748.70 },
-  2010: { fdi_ratio: 0.02, Y_star: 2427.26, H: 2.61, G: 52.21, L: 783.00 },
-  2015: { fdi_ratio: 0.02, Y_star: 2813.86, H: 2.60, G: -52.51, L: 797.00 },
-  2020: { fdi_ratio: 0.02, Y_star: 3262.04, H: 6.71, G: -73.47, L: 787.10 },
-  2025: { fdi_ratio: 0.02, Y_star: 3781.60, H: 6.49, G: -210.00, L: 778.00 }, // Using 2024 value for G and L
+  1980: { fdi_ratio: 0.001, Y_star: 1000.00, H: 0.21, G: 3.78, L: 428.30 },
+  1985: { fdi_ratio: 0.001, Y_star: 1159.27, H: 0.24, G: -0.30, L: 496.80 },
+  1990: { fdi_ratio: 0.02, Y_star: 1343.92, H: 0.24, G: -2.76, L: 550.80 },
+  1995: { fdi_ratio: 0.02, Y_star: 1557.97, H: 0.27, G: 3.47, L: 629.00 },
+  2000: { fdi_ratio: 0.02, Y_star: 1806.11, H: 0.30, G: 5.82, L: 679.50 },
+  2005: { fdi_ratio: 0.02, Y_star: 2093.78, H: 0.32, G: -4.17, L: 748.70 },
+  2010: { fdi_ratio: 0.02, Y_star: 2427.26, H: 0.35, G: 52.21, L: 783.00 },
+  2015: { fdi_ratio: 0.02, Y_star: 2813.86, H: 0.35, G: -52.51, L: 797.00 },
+  2020: { fdi_ratio: 0.02, Y_star: 3262.04, H: 0.89, G: -73.47, L: 787.10 },
+  2025: { fdi_ratio: 0.02, Y_star: 3781.60, H: 0.86, G: -210.00, L: 778.00 }, // Using 2024 value for G and L
 };
 
 // Current exogenous variables (can be modified by the user)
@@ -59,6 +60,9 @@ const YEAR_TO_ROUND = {
 const ROUND_TO_YEAR = Object.fromEntries(
   Object.entries(YEAR_TO_ROUND).map(([year, round]) => [round, parseInt(year)])
 );
+
+// Store Y_0 (GDP in 1980) for imports calculation
+let Y_0;
 
 /**
  * Calculate the economic variables for a given round
@@ -87,13 +91,20 @@ export function calculateRound(round, state, e, s) {
   // Step 4: Compute output/production
   const Y = A * Math.pow(K, PARAMETERS.alpha) * Math.pow(L * exogenous.H, 1 - PARAMETERS.alpha);
 
+  // If it's the first round (1980), store Y as Y_0 for future imports calculations
+  if (round === 0) {
+    Y_0 = Y;
+  }
+
   // Step 6: Compute exports
   const X = PARAMETERS.X0 * Math.pow(e / PARAMETERS.e0, PARAMETERS.epsilon_x) *
             Math.pow(exogenous.Y_star / EXOGENOUS_VARIABLES[1980].Y_star, PARAMETERS.mu_x);
 
   // Step 7: Compute imports
+  // Use Y_0 from the model if available, otherwise fall back to historical value
+  const Y_0_value = (Y_0 !== undefined) ? Y_0 : 191.15;
   const M = PARAMETERS.M0 * Math.pow(e / PARAMETERS.e0, -PARAMETERS.epsilon_m) *
-            Math.pow(Y / 191.15, PARAMETERS.mu_m); // 191.15 is Y_1980
+            Math.pow(Y / Y_0_value, PARAMETERS.mu_m); // Using model's Y_0 instead of hardcoded value
 
   // Step 8: Compute net exports
   const NX = X - M;

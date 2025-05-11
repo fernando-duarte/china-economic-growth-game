@@ -39,41 +39,47 @@
 | $\theta$                        | Openness contribution to TFP growth          | unitless | $0.1453$    | 0.01 to 0.5     |
 | $\phi$                          | FDI contribution to TFP growth               | unitless | $0.10$      | 0.01 to 0.5     |
 | $K_0$                           | Initial level of physical capital (1980)     | bn USD   | $2050.10$   | Fixed           |
-| $X_0$                           | Initial level of exports (1980)              | bn USD   | $18.10$     | Fixed           |
-| $M_0$                           | Initial level of imports (1980)              | bn USD   | $14.50$     | Fixed           |
+| $X_0$                           | Initial level of exports (1980)              | bn USD   | $19.41$     | Fixed           |
+| $M_0$                           | Initial level of imports (1980)              | bn USD   | $21.84$     | Fixed           |
 | $L_0$                           | Initial labor force (1980)                   | millions | $428.30$    | Fixed           |
 | $A_0$                           | Initial level of TFP (1980)                  | index    | $0.832$     | Fixed           |
 | $\varepsilon_x,\ \varepsilon_m$ | Exchange‐rate elasticities (exports/imports) | unitless | $1.5,\ 1.2$ | 0.5 to 3.0      |
 | $\mu_x,\ \mu_m$                 | Income elasticities (exports/imports)        | unitless | $1.0,\ 1.0$ | 0.5 to 2.0      |
 
-**Note:** The initial TFP, $A_0$, is set to match the historical TFP value from 1980 data (0.832). Previously, it was backed out from 1980 data via:
+**Note:** The initial TFP, $A_0$, is set to match the historical TFP value from 1980 data (0.832). Human capital values have been scaled by a factor of 0.1329 to ensure that the model's initial GDP in 1980 matches the historical value of 191.15 billion USD. With the original human capital values, the model's GDP would be much higher than the historical value:
 
 $$
-A_0 \;=\;\frac{Y_{1980}}{K_0^{\alpha}\,(L_0\,H_0)^{1-\alpha}}
-\;=\;\frac{191.15}{2050.10^{0.30}\,\bigl(428.30\times1.58\bigr)^{0.70}}
-\;\approx\;0.203.
+Y_0 = A_0 K_0^{\alpha} (L_0\,H_0)^{1-\alpha} = 0.832 \times 2050.10^{0.30} \times (428.30 \times 1.58)^{0.70} \approx 785.13
+$$
+
+With the scaled human capital value of $H_0 = 0.21$:
+
+$$
+Y_0 = 0.832 \times 2050.10^{0.30} \times (428.30 \times 0.21)^{0.70} \approx 191.18
 $$
 
 ## Paths of exogenous variables
 
 | Year | $\tilde e_t$ | $fdi\_ratio_t$ | $Y^*_t$ | $H_t$ | $G_t$ |
 | ---: | -----------: | -------------: | ------: | ----: | ----: |
-| 1980 |         0.78 |          0.001 | 1000.00 |  1.58 |  3.78 |
-| 1985 |         1.53 |          0.001 | 1159.27 |  1.77 | −0.30 |
-| 1990 |         2.48 |           0.02 | 1343.92 |  1.80 | −2.76 |
-| 1995 |         4.34 |           0.02 | 1557.97 |  2.02 | 3.47 |
-| 2000 |         5.23 |           0.02 | 1806.11 |  2.24 | 5.82 |
-| 2005 |         4.75 |           0.02 | 2093.78 |  2.43 | −4.17 |
-| 2010 |         5.61 |           0.02 | 2427.26 |  2.61 | 52.21 |
-| 2015 |         7.27 |           0.02 | 2813.86 |  2.60 | −52.51 |
-| 2020 |         7.00 |           0.02 | 3262.04 |  6.71 | −73.47 |
-| 2025 |         6.41 |           0.02 | 3781.60 |  6.49 | −210.00 |
+| 1980 |         0.78 |          0.001 | 1000.00 |  0.21 |  3.78 |
+| 1985 |         1.53 |          0.001 | 1159.27 |  0.24 | −0.30 |
+| 1990 |         2.48 |           0.02 | 1343.92 |  0.24 | −2.76 |
+| 1995 |         4.34 |           0.02 | 1557.97 |  0.27 | 3.47 |
+| 2000 |         5.23 |           0.02 | 1806.11 |  0.30 | 5.82 |
+| 2005 |         4.75 |           0.02 | 2093.78 |  0.32 | −4.17 |
+| 2010 |         5.61 |           0.02 | 2427.26 |  0.35 | 52.21 |
+| 2015 |         7.27 |           0.02 | 2813.86 |  0.35 | −52.51 |
+| 2020 |         7.00 |           0.02 | 3262.04 |  0.89 | −73.47 |
+| 2025 |         6.41 |           0.02 | 3781.60 |  0.86 | −210.00 |
 
 Values for 2025 are latest available:
 
 - $\tilde e_t$ uses 2024 value
-- $H_t$ uses 2022 value
+- $H_t$ uses 2022 value (scaled)
 - $G_t$ uses 2024 value
+
+Note: Human capital values ($H_t$) have been scaled by a factor of 0.1329 from their original values to ensure that the model's initial GDP in 1980 matches the historical value of 191.15 billion USD.
 
 ## Control Variables (Student/Player-Determined)
 
@@ -180,6 +186,7 @@ Rounds/Periods correspond to (t = 0) → 1980, (t = 1) → 1985, ... . For examp
      M_t = M_0\Bigl(\tfrac{e_t}{e_{0}}\Bigr)^{-\varepsilon_m}
        \Bigl(\tfrac{Y_t}{Y_{0}}\Bigr)^{\mu_m}.
    $$
+   where $Y_0$ is the model-implied GDP in 1980 (not the historical value).
 8. Compute net exports:
    $$ NX_t = X_t - M_t $$
 9. Compute openness ratio:
