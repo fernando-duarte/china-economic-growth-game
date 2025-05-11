@@ -30,9 +30,24 @@ const ParameterSettings = ({ parameters, onParametersChange }) => {
     });
   };
 
+  // Define parameter ranges
+  const paramRanges = {
+    alpha: { min: 0.1, max: 0.9 },
+    delta: { min: 0.01, max: 0.2 },
+    g: { min: 0.001, max: 0.05 },
+    theta: { min: 0.01, max: 0.5 },
+    phi: { min: 0.01, max: 0.5 },
+    epsilon_x: { min: 0.5, max: 3.0 },
+    epsilon_m: { min: 0.5, max: 3.0 },
+    mu_x: { min: 0.5, max: 2.0 },
+    mu_m: { min: 0.5, max: 2.0 }
+  };
+
   const handleInputChange = (param) => (event) => {
     const value = event.target.value === '' ? '' : Number(event.target.value);
-    if (value === '' || (value >= 0 && value <= 1)) {
+    const { min, max } = paramRanges[param];
+
+    if (value === '' || (value >= min && value <= max)) {
       setLocalParameters({
         ...localParameters,
         [param]: value
@@ -61,41 +76,55 @@ const ParameterSettings = ({ parameters, onParametersChange }) => {
   const growthParams = ['g', 'theta', 'phi'];
   const tradeParams = ['epsilon_x', 'epsilon_m', 'mu_x', 'mu_m'];
 
-  const renderParameterSlider = (param, label, min, max, step, description) => (
-    <Box sx={{ mb: 2 }}>
-      <Typography id={`${param}-slider`} gutterBottom>
-        {label}: {localParameters[param].toFixed(4)}
-      </Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Slider
-          value={localParameters[param]}
-          onChange={handleSliderChange(param)}
-          aria-labelledby={`${param}-slider`}
-          valueLabelDisplay="auto"
-          step={step}
-          min={min}
-          max={max}
-          sx={{ flexGrow: 1, mr: 2 }}
-        />
-        <TextField
-          value={localParameters[param]}
-          onChange={handleInputChange(param)}
-          inputProps={{
-            step,
-            min,
-            max,
-            type: 'number',
-            'aria-labelledby': `${param}-slider`,
-          }}
-          sx={{ width: 80 }}
-          size="small"
-        />
+  const renderParameterSlider = (param, label, min, max, step, description) => {
+    // Update the paramRanges object with the current min/max values
+    paramRanges[param] = { min, max };
+
+    return (
+      <Box sx={{ mb: 2 }}>
+        <Typography id={`${param}-slider`} gutterBottom>
+          {label}: {localParameters[param].toFixed(4)}
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Slider
+            value={typeof localParameters[param] === 'number' ? localParameters[param] : min}
+            onChange={handleSliderChange(param)}
+            aria-labelledby={`${param}-slider`}
+            valueLabelDisplay="auto"
+            step={step}
+            min={min}
+            max={max}
+            sx={{ flexGrow: 1, mr: 2 }}
+          />
+          <TextField
+            value={localParameters[param]}
+            onChange={handleInputChange(param)}
+            onBlur={() => {
+              // Handle empty values on blur
+              if (localParameters[param] === '') {
+                setLocalParameters({
+                  ...localParameters,
+                  [param]: min
+                });
+              }
+            }}
+            inputProps={{
+              step,
+              min,
+              max,
+              type: 'number',
+              'aria-labelledby': `${param}-slider`,
+            }}
+            sx={{ width: 80 }}
+            size="small"
+          />
+        </Box>
+        <Typography variant="caption" color="text.secondary">
+          {description}
+        </Typography>
       </Box>
-      <Typography variant="caption" color="text.secondary">
-        {description}
-      </Typography>
-    </Box>
-  );
+    );
+  };
 
   return (
     <Paper sx={{ p: 3, mb: 3 }}>
