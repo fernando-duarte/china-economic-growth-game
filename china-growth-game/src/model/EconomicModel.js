@@ -13,7 +13,7 @@ const DEFAULT_PARAMETERS = {
   K0: 2050.10,           // Initial level of physical capital (1980)
   X0: 18.10,             // Initial level of exports (1980)
   M0: 14.50,             // Initial level of imports (1980)
-  A0: 0.203,             // Initial level of TFP (1980)
+  A0: 0.832,             // Initial level of TFP (1980) - using historical data value
   epsilon_x: 1.5,        // Exchange-rate elasticity (exports)
   epsilon_m: 1.2,        // Exchange-rate elasticity (imports)
   mu_x: 1.0,             // Income elasticity (exports)
