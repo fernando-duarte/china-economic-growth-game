@@ -6,12 +6,12 @@ import {
   Typography,
   Tabs,
   Tab,
+  Grid,
   FormControl,
   InputLabel,
   Select,
   MenuItem
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -263,48 +263,48 @@ const SimulationCharts = ({ simulationResults }) => {
       </Box>
 
       {activeTab === 0 && (
-        <Grid container spacing={2}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           {Object.entries(variableCategories.economicIndicators.variables).map(([key, name], index) => (
-            <Grid xs={12} sm={6} key={key}>
+            <Box key={key} sx={{ width: { xs: '100%', sm: '48%', md: '48%' } }}>
               <VariableChart
                 simulationResults={simulationResults}
                 variable={key}
                 variableName={name}
                 colorIndex={index}
               />
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       )}
 
       {activeTab === 1 && (
-        <Grid container spacing={2}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           {Object.entries(variableCategories.productionFactors.variables).map(([key, name], index) => (
-            <Grid xs={12} sm={6} key={key}>
+            <Box key={key} sx={{ width: { xs: '100%', sm: '48%', md: '48%' } }}>
               <VariableChart
                 simulationResults={simulationResults}
                 variable={key}
                 variableName={name}
                 colorIndex={index}
               />
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       )}
 
       {activeTab === 2 && (
-        <Grid container spacing={2}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           {Object.entries(variableCategories.policyAndExogenous.variables).map(([key, name], index) => (
-            <Grid xs={12} sm={6} key={key}>
+            <Box key={key} sx={{ width: { xs: '100%', sm: '48%', md: '48%' } }}>
               <VariableChart
                 simulationResults={simulationResults}
                 variable={key}
                 variableName={name}
                 colorIndex={index}
               />
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       )}
 
       {activeTab === 3 && (
@@ -317,9 +317,9 @@ const SimulationCharts = ({ simulationResults }) => {
               Select variables to compare their trends over time.
             </Typography>
 
-            <Grid container spacing={2} sx={{ mb: 2 }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2 }}>
               {comparisonVariables.map((variable, index) => (
-                <Grid xs={12} sm={6} md={4} key={index}>
+                <Box key={index} sx={{ width: { xs: '100%', sm: '48%', md: '31%' } }}>
                   <FormControl fullWidth>
                     <InputLabel>Variable {index + 1}</InputLabel>
                     <Select
@@ -332,9 +332,9 @@ const SimulationCharts = ({ simulationResults }) => {
                       ))}
                     </Select>
                   </FormControl>
-                </Grid>
+                </Box>
               ))}
-            </Grid>
+            </Box>
           </Box>
 
           <ComparisonChart
