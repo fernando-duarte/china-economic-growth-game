@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { 
-  Box, 
-  Paper, 
-  Typography, 
-  Tabs, 
-  Tab, 
-  Grid,
+import {
+  Box,
+  Paper,
+  Typography,
+  Tabs,
+  Tab,
   FormControl,
   InputLabel,
   Select,
   MenuItem
 } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -89,7 +89,7 @@ const VariableChart = ({ simulationResults, variable, variableName, colorIndex =
   // Extract years and variable values from simulation results
   const years = simulationResults.map(result => result.year);
   const values = simulationResults.map(result => result[variable]);
-  
+
   // Determine if we need more decimal places for small values
   const needsMoreDecimals = Math.max(...values.map(v => Math.abs(v))) < 1;
   const decimalPlaces = needsMoreDecimals ? 4 : 2;
@@ -156,7 +156,7 @@ const VariableChart = ({ simulationResults, variable, variableName, colorIndex =
 const ComparisonChart = ({ simulationResults, variables }) => {
   // Extract years from simulation results
   const years = simulationResults.map(result => result.year);
-  
+
   // Prepare datasets for each variable
   const datasets = variables.map((variable, index) => {
     const values = simulationResults.map(result => result[variable.key]);
@@ -220,7 +220,7 @@ const SimulationCharts = ({ simulationResults }) => {
 
   // State for the active tab
   const [activeTab, setActiveTab] = useState(0);
-  
+
   // State for comparison chart variables
   const [comparisonVariables, setComparisonVariables] = useState([
     { key: 'Y', name: 'GDP (Y)' },
@@ -233,7 +233,7 @@ const SimulationCharts = ({ simulationResults }) => {
   };
 
   // Get all available variables for comparison
-  const allVariables = Object.entries(variableCategories).flatMap(([categoryKey, category]) => 
+  const allVariables = Object.entries(variableCategories).flatMap(([categoryKey, category]) =>
     Object.entries(category.variables).map(([key, name]) => ({ key, name }))
   );
 
@@ -252,7 +252,7 @@ const SimulationCharts = ({ simulationResults }) => {
       <Typography variant="h5" gutterBottom>
         Simulation Charts
       </Typography>
-      
+
       <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
         <Tabs value={activeTab} onChange={handleTabChange} aria-label="chart tabs">
           <Tab label="Economic Indicators" />
@@ -265,12 +265,12 @@ const SimulationCharts = ({ simulationResults }) => {
       {activeTab === 0 && (
         <Grid container spacing={2}>
           {Object.entries(variableCategories.economicIndicators.variables).map(([key, name], index) => (
-            <Grid item xs={12} md={6} key={key}>
-              <VariableChart 
-                simulationResults={simulationResults} 
-                variable={key} 
-                variableName={name} 
-                colorIndex={index} 
+            <Grid xs={12} sm={6} key={key}>
+              <VariableChart
+                simulationResults={simulationResults}
+                variable={key}
+                variableName={name}
+                colorIndex={index}
               />
             </Grid>
           ))}
@@ -280,12 +280,12 @@ const SimulationCharts = ({ simulationResults }) => {
       {activeTab === 1 && (
         <Grid container spacing={2}>
           {Object.entries(variableCategories.productionFactors.variables).map(([key, name], index) => (
-            <Grid item xs={12} md={6} key={key}>
-              <VariableChart 
-                simulationResults={simulationResults} 
-                variable={key} 
-                variableName={name} 
-                colorIndex={index} 
+            <Grid xs={12} sm={6} key={key}>
+              <VariableChart
+                simulationResults={simulationResults}
+                variable={key}
+                variableName={name}
+                colorIndex={index}
               />
             </Grid>
           ))}
@@ -295,12 +295,12 @@ const SimulationCharts = ({ simulationResults }) => {
       {activeTab === 2 && (
         <Grid container spacing={2}>
           {Object.entries(variableCategories.policyAndExogenous.variables).map(([key, name], index) => (
-            <Grid item xs={12} md={6} key={key}>
-              <VariableChart 
-                simulationResults={simulationResults} 
-                variable={key} 
-                variableName={name} 
-                colorIndex={index} 
+            <Grid xs={12} sm={6} key={key}>
+              <VariableChart
+                simulationResults={simulationResults}
+                variable={key}
+                variableName={name}
+                colorIndex={index}
               />
             </Grid>
           ))}
@@ -316,10 +316,10 @@ const SimulationCharts = ({ simulationResults }) => {
             <Typography variant="body2" paragraph>
               Select variables to compare their trends over time.
             </Typography>
-            
+
             <Grid container spacing={2} sx={{ mb: 2 }}>
               {comparisonVariables.map((variable, index) => (
-                <Grid item xs={12} md={4} key={index}>
+                <Grid xs={12} sm={6} md={4} key={index}>
                   <FormControl fullWidth>
                     <InputLabel>Variable {index + 1}</InputLabel>
                     <Select
@@ -336,10 +336,10 @@ const SimulationCharts = ({ simulationResults }) => {
               ))}
             </Grid>
           </Box>
-          
-          <ComparisonChart 
-            simulationResults={simulationResults} 
-            variables={comparisonVariables} 
+
+          <ComparisonChart
+            simulationResults={simulationResults}
+            variables={comparisonVariables}
           />
         </>
       )}
