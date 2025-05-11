@@ -133,9 +133,9 @@ const VariableChart = ({ simulationResults, variable, variableName, colorIndex =
   let historicalValues = [];
 
   if (hasHistoricalData) {
-    // Filter historical data to only include years that match our simulation years
-    historicalYears = historicalData.years.filter(year => year <= 2025);
-    historicalValues = historicalData[variable].slice(0, historicalYears.length);
+    // Only use actual historical data (no extrapolation to 2025)
+    historicalYears = historicalData.years;
+    historicalValues = historicalData[variable];
   }
 
   // Prepare datasets for the chart
@@ -233,9 +233,9 @@ const ComparisonChart = ({ simulationResults, variables }) => {
 
     // Add historical data if available
     if (historicalData[variable.key] !== undefined) {
-      // Filter historical data to only include years that match our simulation years
-      const historicalYears = historicalData.years.filter(year => year <= 2025);
-      const historicalValues = historicalData[variable.key].slice(0, historicalYears.length);
+      // Only use actual historical data (no extrapolation to 2025)
+      const historicalYears = historicalData.years;
+      const historicalValues = historicalData[variable.key];
 
       datasets.push({
         label: `${variable.name} (Historical)`,
