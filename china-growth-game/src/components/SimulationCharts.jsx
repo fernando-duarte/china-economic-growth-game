@@ -163,9 +163,35 @@ const VariableChart = ({ simulationResults, variable, variableName, colorIndex =
   }
 
   // Prepare data for the chart
+  // For historical data, we need to explicitly map it to the simulation years
+  // with null values for years that don't have historical data (like 2025)
+  const datasets_with_correct_years = datasets.map(dataset => {
+    // If this is a historical dataset
+    if (dataset.label.includes('Historical')) {
+      // Create a new array with null values for all simulation years
+      const mappedData = years.map(year => null);
+
+      // Fill in the values for years that have historical data
+      historicalData.years.forEach((histYear, index) => {
+        const yearIndex = years.indexOf(histYear);
+        if (yearIndex !== -1) {
+          mappedData[yearIndex] = dataset.data[index];
+        }
+      });
+
+      return {
+        ...dataset,
+        data: mappedData
+      };
+    }
+
+    // For model data, keep as is
+    return dataset;
+  });
+
   const data = {
     labels: years,
-    datasets: datasets,
+    datasets: datasets_with_correct_years,
   };
 
   // Chart options
@@ -250,9 +276,35 @@ const ComparisonChart = ({ simulationResults, variables }) => {
   });
 
   // Prepare data for the chart
+  // For historical data, we need to explicitly map it to the simulation years
+  // with null values for years that don't have historical data (like 2025)
+  const datasets_with_correct_years = datasets.map(dataset => {
+    // If this is a historical dataset
+    if (dataset.label.includes('Historical')) {
+      // Create a new array with null values for all simulation years
+      const mappedData = years.map(year => null);
+
+      // Fill in the values for years that have historical data
+      historicalData.years.forEach((histYear, index) => {
+        const yearIndex = years.indexOf(histYear);
+        if (yearIndex !== -1) {
+          mappedData[yearIndex] = dataset.data[index];
+        }
+      });
+
+      return {
+        ...dataset,
+        data: mappedData
+      };
+    }
+
+    // For model data, keep as is
+    return dataset;
+  });
+
   const data = {
     labels: years,
-    datasets: datasets,
+    datasets: datasets_with_correct_years,
   };
 
   // Chart options
