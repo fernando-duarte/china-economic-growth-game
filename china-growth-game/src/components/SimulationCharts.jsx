@@ -146,6 +146,8 @@ const VariableChart = ({ simulationResults, variable, variableName, colorIndex =
       borderColor: chartColors[colorIndex % chartColors.length].borderColor,
       backgroundColor: chartColors[colorIndex % chartColors.length].backgroundColor,
       tension: 0.3,
+      pointRadius: 3,
+      pointHoverRadius: 5,
     }
   ];
 
@@ -159,6 +161,8 @@ const VariableChart = ({ simulationResults, variable, variableName, colorIndex =
       borderDash: [5, 5],
       tension: 0.3,
       pointStyle: 'triangle',
+      pointRadius: 6,
+      pointHoverRadius: 8,
     });
   }
 
@@ -255,6 +259,8 @@ const ComparisonChart = ({ simulationResults, variables }) => {
       borderColor: chartColors[index % chartColors.length].borderColor,
       backgroundColor: chartColors[index % chartColors.length].backgroundColor,
       tension: 0.3,
+      pointRadius: 3,
+      pointHoverRadius: 5,
     });
 
     // Add historical data if available
@@ -271,6 +277,8 @@ const ComparisonChart = ({ simulationResults, variables }) => {
         borderDash: [5, 5],
         tension: 0.3,
         pointStyle: 'triangle',
+        pointRadius: 6,
+        pointHoverRadius: 8,
       });
     }
   });
