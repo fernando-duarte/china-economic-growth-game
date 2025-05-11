@@ -39,6 +39,7 @@ import ParameterSettings from './ParameterSettings';
 import ExogenousVariables from './ExogenousVariables';
 import PolicyPlanner from './PolicyPlanner';
 import GDPChart from './GDPChart';
+import SimulationCharts from './SimulationCharts';
 
 const Game = () => {
   // Game state
@@ -327,6 +328,9 @@ const Game = () => {
                   These are the economic outcomes based on your policy decisions.
                 </Typography>
 
+                <Typography variant="h6" gutterBottom>
+                  Main Economic Indicators
+                </Typography>
                 <TableContainer sx={{ mb: 3 }}>
                   <Table size="small">
                     <TableHead>
@@ -354,6 +358,74 @@ const Game = () => {
                           <TableCell align="right">{result.M.toFixed(2)}</TableCell>
                           <TableCell align="right">{result.NX.toFixed(2)}</TableCell>
                           <TableCell align="right">{result.e.toFixed(2)}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <Typography variant="h6" gutterBottom>
+                  Production Factors
+                </Typography>
+                <TableContainer sx={{ mb: 3 }}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Year</TableCell>
+                        <TableCell align="right">Capital (K)</TableCell>
+                        <TableCell align="right">Labor (L)</TableCell>
+                        <TableCell align="right">Human Capital (H)</TableCell>
+                        <TableCell align="right">TFP (A)</TableCell>
+                        <TableCell align="right">Next Period Capital (K_next)</TableCell>
+                        <TableCell align="right">Next Period TFP (A_next)</TableCell>
+                        <TableCell align="right">Next Period Labor (L_next)</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {simulationResults.map((result, index) => (
+                        <TableRow key={result.year}>
+                          <TableCell component="th" scope="row">
+                            {result.year} {result.year === 1980 ? '(Start)' : result.year === 2025 ? '(End)' : ''}
+                          </TableCell>
+                          <TableCell align="right">{result.K.toFixed(2)}</TableCell>
+                          <TableCell align="right">{result.L.toFixed(2)}</TableCell>
+                          <TableCell align="right">{result.H.toFixed(2)}</TableCell>
+                          <TableCell align="right">{result.A.toFixed(4)}</TableCell>
+                          <TableCell align="right">{result.K_next.toFixed(2)}</TableCell>
+                          <TableCell align="right">{result.A_next.toFixed(4)}</TableCell>
+                          <TableCell align="right">{result.L_next.toFixed(2)}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <Typography variant="h6" gutterBottom>
+                  Policy and Exogenous Variables
+                </Typography>
+                <TableContainer sx={{ mb: 3 }}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Year</TableCell>
+                        <TableCell align="right">Saving Rate (s)</TableCell>
+                        <TableCell align="right">FDI Ratio</TableCell>
+                        <TableCell align="right">Foreign Income (Y_star)</TableCell>
+                        <TableCell align="right">Government Spending (G)</TableCell>
+                        <TableCell align="right">Trade Openness</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {simulationResults.map((result, index) => (
+                        <TableRow key={result.year}>
+                          <TableCell component="th" scope="row">
+                            {result.year} {result.year === 1980 ? '(Start)' : result.year === 2025 ? '(End)' : ''}
+                          </TableCell>
+                          <TableCell align="right">{result.s.toFixed(2)}</TableCell>
+                          <TableCell align="right">{result.fdi_ratio.toFixed(3)}</TableCell>
+                          <TableCell align="right">{result.Y_star.toFixed(2)}</TableCell>
+                          <TableCell align="right">{result.G.toFixed(2)}</TableCell>
+                          <TableCell align="right">{result.openness.toFixed(3)}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -405,9 +477,12 @@ const Game = () => {
         )}
       </Paper>
 
-      {/* GDP Chart - Always visible regardless of active tab */}
+      {/* Charts - Always visible regardless of active tab */}
       {isSimulationRun && (
-        <GDPChart simulationResults={simulationResults} />
+        <>
+          <GDPChart simulationResults={simulationResults} />
+          <SimulationCharts simulationResults={simulationResults} />
+        </>
       )}
     </Box>
   );
